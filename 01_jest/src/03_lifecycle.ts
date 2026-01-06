@@ -14,6 +14,7 @@ export interface CartItem {
   quantity: number;
 }
 
+
 // ============================================
 // 1. LocalStorage 관련 함수들
 // ============================================
@@ -22,14 +23,14 @@ export interface CartItem {
  * localStorage에 장바구니 저장
  */
 export function saveCartToLocalStorage(cart: CartItem[]): void {
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 /**
  * localStorage에서 장바구니 가져오기
  */
 export function getCartFromLocalStorage(): CartItem[] {
-  const cartStr = localStorage.getItem("cart");
+  const cartStr = localStorage.getItem('cart');
   return cartStr ? JSON.parse(cartStr) : [];
 }
 
@@ -37,7 +38,7 @@ export function getCartFromLocalStorage(): CartItem[] {
  * localStorage 장바구니 초기화
  */
 export function clearCartFromLocalStorage(): void {
-  localStorage.removeItem("cart");
+  localStorage.removeItem('cart');
 }
 
 // ============================================
@@ -49,9 +50,9 @@ export function clearCartFromLocalStorage(): void {
  */
 export function addToCart(product: Product, quantity: number = 1): CartItem[] {
   const cart = getCartFromLocalStorage();
-
-  const existingItem = cart.find((item) => item.productId === product.id);
-
+  
+  const existingItem = cart.find(item => item.productId === product.id);
+  
   if (existingItem) {
     existingItem.quantity += quantity;
   } else {
@@ -59,10 +60,10 @@ export function addToCart(product: Product, quantity: number = 1): CartItem[] {
       productId: product.id,
       productName: product.name,
       price: product.price,
-      quantity,
+      quantity
     });
   }
-
+  
   saveCartToLocalStorage(cart);
   return cart;
 }
@@ -72,7 +73,7 @@ export function addToCart(product: Product, quantity: number = 1): CartItem[] {
  */
 export function removeFromCart(productId: number): CartItem[] {
   const cart = getCartFromLocalStorage();
-  const updatedCart = cart.filter((item) => item.productId !== productId);
+  const updatedCart = cart.filter(item => item.productId !== productId);
   saveCartToLocalStorage(updatedCart);
   return updatedCart;
 }
@@ -82,7 +83,7 @@ export function removeFromCart(productId: number): CartItem[] {
  */
 export function calculateCartTotal(): number {
   const cart = getCartFromLocalStorage();
-  return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
 /**
